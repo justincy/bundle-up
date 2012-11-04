@@ -35,12 +35,22 @@ class BundleUp
       # Compile files on-the-fly when not bundled
       @app.use (new OnTheFlyCompiler(@js, @css, options.compilers)).middleware
 
-    @app.locals(
-      renderStyles: (namespace=@css.defaultNamespace) =>
-        return @css.render(namespace)
-      renderJs: (namespace=@js.defaultNamespace) =>
-        return @js.render(namespace)
-    )
+
+    if(@app.dynamicHelpers)
+      # Support for Express 2
+      @app.dynamicHelpers(
+          renderStyles: @css.render.bind(@css)
+          renderJs: @js.render.bind(@js)
+      )
+
+    else if(@app.locals)
+      # Support for Express 3
+      @app.locals(
+        renderStyles: (namespace=@css.defaultNamespace) =>
+          return @css.render(namespace)
+        renderJs: (namespace=@js.defaultNamespace) =>
+          return @js.render(namespace)
+      )
 
 module.exports = (app, assetPath, options)->
   new BundleUp(app, assetPath, options)
