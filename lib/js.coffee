@@ -17,7 +17,13 @@ class Js extends Bundle
     js = ''
     for file in @files
       if file.namespace == namespace
-        js += "<script src='#{file.url}' type='text/javascript'></script>"
+
+        if typeof file.url is "string" # added via .addJsUrl or .addJsFile
+          js += "<script src='#{file.url}' type='text/javascript'></script>"
+
+        if typeof file.url is "object" # added via .addJsObject
+          js += "<script type='text/javascript'>#{JSON.stringify(file.file)}</script>"
+
     js
 
   _convertFilename: (filename) ->

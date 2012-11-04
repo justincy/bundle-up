@@ -14,4 +14,7 @@ class AssetsManager
   addJsUrl: (file, namespace=undefined) =>
     @js.addUrl(file, namespace)
 
+  addJsObject: (obj, namespace=undefined) =>
+    @js.addObject(obj, namespace)
+
 module.exports = AssetsManager

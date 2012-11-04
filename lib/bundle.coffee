@@ -117,6 +117,16 @@ class Bundle
   addUrl:(url, namespace=@defaultNamespace) =>
     @_addUrl(url, namespace, true)
 
+  addObject: (object, namespace=@defaultNamespace) =>
+    throw new Error(".addObject(object, ...) must be an object") if typeof object is not "object"
+
+    @files.push
+      url: {}
+      file: object
+      origFile: null
+      needsCompiling: false
+      namespace: namespace
+
   _addUrl:(url, namespace=@defaultNamespace, isFromPublicAPI=false) =>
     @files.push
       url: if isFromPublicAPI then true else url
@@ -130,14 +140,16 @@ class Bundle
 
     compileBundle = (namespace, files) =>
       str = ''
-      urls = []
+      specialFiles = []
 
       for file in files
-        if file.namespace == namespace and file.url != true
-          @_compile(file.origFile, file.file)
-          str += fs.readFileSync(file.file, 'utf-8').trim('\n') + '\n'
-        else if file.namespace == namespace and file.url is true
-          urls.push(file.file)
+        if file.namespace == namespace
+          if typeof file.url is "object" or typeof file.url is "boolean"
+            specialFiles.push(file.file)
+
+          else if typeof file.url is "string"
+            @_compile(file.origFile, file.file)
+            str += fs.readFileSync(file.file, 'utf-8').trim('\n') + '\n'
 
       str = @minify(str)
       hash = crypto.createHash('md5').update(str).digest('hex')
@@ -148,8 +160,15 @@ class Bundle
       # Add the bundle file
       @addFile(filepath, namespace)
 
-      # Add the urls
-      @_addUrl(url, namespace) for url in urls
+      # Add the special files (urls & objects)
+      for specialFile in specialFiles
+        if typeof specialFile is "object"
+          # Add the object
+          @addObject(specialFile, namespace)
+        else
+          # Add the objecturl
+          @_addUrl(specialFile, namespace)
+
 
     # Find all bundles name
     bundles = []
