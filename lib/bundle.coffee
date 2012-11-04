@@ -86,7 +86,7 @@ class Bundle
 
     for f in @files
       # File already exists!
-      return if file == f.origFile
+      return if file is f.origFile and namespace is f.namespace
 
     # Check if the file is a "filter path"
     if file.indexOf('*') > -1

@@ -25,6 +25,13 @@ describe 'Namespaces', ->
     expect(@js.files[1].namespace).to.equal('namespace2')
     expect(@js.files[2].namespace).to.equal('namespace3')
 
+  it 'should add the same file in different namespaces', ->
+    @js.addFile(__dirname + '/files/coffee/1.coffee', 'namespace1')
+    @js.addFile(__dirname + '/files/coffee/1.coffee', 'namespace2')
+    expect(@js.files.length).to.equal(2)
+    expect(@js.files[0].namespace).to.equal('namespace1')
+    expect(@js.files[1].namespace).to.equal('namespace2')
+
   it 'should add the correct namespaces when using filtered paths', ->
     @js.addFile(__dirname + '/files/coffee/*.coffee', 'namespace1')
 
