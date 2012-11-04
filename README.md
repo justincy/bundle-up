@@ -22,8 +22,8 @@ Usage
 -----
 
 ``` js
-var BundleUp = require('bundle-up');
-var assets = require('./assets');
+var BundleUp = require('bundle-up')
+,   assets = require('./assets');
 
 BundleUp(app, assets, {
   staticRoot: __dirname + '/public/',
@@ -43,16 +43,20 @@ The first parameter to the BundleUp middleware is the app object and the second 
 ``` js
 // assets.js
 module.exports = function(assets) {
-  assets.root = __dirname;
-  assets.addJs('/public/js/jquery-1.6.4.min.js');
+  // Support namespace/bundle
+  assets.addJs('/public/js/jquery-1.6.4.min.js', 'default');
+  assets.addJs('/public/js/jquery-1.6.4.min.js', 'app');
+
   assets.addJs('/public/js/jquery.placeholder.min.js');
   assets.addJs('/app/client/main.coffee');
 
+  // New
   assets.addJsUrl('/socket.io.js');
 
   assets.addCss('/public/bootstrap/bootstrap.min.css');
   assets.addCss('/app/styles/screen.styl');
 
+  // New
   assets.addCssUrl('http://twitter.github.com/bootstrap/assets/css/bootstrap.css');
 }
 ```
