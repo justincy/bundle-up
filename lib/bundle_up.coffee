@@ -36,14 +36,7 @@ class BundleUp
       @app.use (new OnTheFlyCompiler(@js, @css, options.compilers)).middleware
 
 
-    if(@app.dynamicHelpers)
-      # Support for Express 2
-      @app.dynamicHelpers(
-          renderStyles: @css.render.bind(@css)
-          renderJs: @js.render.bind(@js)
-      )
-
-    else if(@app.locals)
+    if(@app.locals)
       # Support for Express 3
       @app.locals(
         renderStyles: (namespace=@css.defaultNamespace) =>
@@ -51,6 +44,14 @@ class BundleUp
         renderJs: (namespace=@js.defaultNamespace) =>
           return @js.render(namespace)
       )
+
+    else if(@app.dynamicHelpers)
+      # Support for Express 2
+      @app.dynamicHelpers(
+          renderStyles: @css.render.bind(@css)
+          renderJs: @js.render.bind(@js)
+      )
+
 
 module.exports = (app, assetPath, options)->
   new BundleUp(app, assetPath, options)
