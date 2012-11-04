@@ -8,6 +8,7 @@ class Bundle
   constructor: (@options) ->
     @options.staticRoot = path.normalize(@options.staticRoot)
     @files = []
+    @defaultCompiledDir = 'c'
     @defaultNamespace = 'global'
 
   # Gets relative path from staticRoot. If the
@@ -24,8 +25,8 @@ class Bundle
         break
     return relativePath
 
-  # 
-  # Determines based on file extension 
+  #
+  # Determines based on file extension
   # if the file needs to get compiled
   #
   _needsCompiling: (file) ->
@@ -98,7 +99,7 @@ class Bundle
     # Determine if we need to copy/compile
     # the file into the staticRoot folder
     if (file.indexOf(@options.staticRoot) == -1 or @_needsCompiling(file))
-      writeTo = path.normalize(@_convertFilename(@options.staticRoot + '/generated/' + relativeFile))
+      writeTo = path.normalize(@_convertFilename("#{@options.staticRoot}/#{@defaultCompiledDir}/#{relativeFile}"))
       needsCompiling = true
       file = writeTo
       relativeFile = @_getRelativePath(file)
@@ -123,7 +124,7 @@ class Bundle
 
       str = @minify(str)
       hash = crypto.createHash('md5').update(str).digest('hex')
-      filepath = "#{@options.staticRoot}/generated/bundle/#{hash.substring(0, 7)}_#{namespace}#{@fileExtension}"
+      filepath = "#{@options.staticRoot}/#{@defaultCompiledDir}/bundle/#{hash.substring(0, 7)}_#{namespace}#{@fileExtension}"
 
       writeToFile(filepath, str)
 
