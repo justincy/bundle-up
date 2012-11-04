@@ -62,11 +62,11 @@ By default this will render
 
 ``` html
 <link href='/bootstrap/bootstrap.min.css' media='screen' rel='stylesheet' type='text/css'/>
-<link href='/generated/app/styles/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+<link href='/min/app/styles/screen.css' media='screen' rel='stylesheet' type='text/css'/>
 
 <script src='/js/jquery-1.6.4.min.js' type='text/javascript'></script>
 <script src='/js/jquery.placeholder.min.js' type='text/javascript'></script>
-<script src='/generated/app/client/main.js' type='text/javascript'></script>
+<script src='/min/app/client/main.js' type='text/javascript'></script>
 ```
 
 All assets will be compiled on-the-fly when `bundle:false` is set. Therefore the server never
@@ -75,15 +75,15 @@ needs to be restarted when editing the different assets.
 To render bundles `bundle:true` needs to be passed as a parameter to the middleware. This will concatenate all javascript and css files into bundles and render this:
 
 ``` html
-<link href='/generated/bundle/d7aa56c_global.css' media='screen' rel='stylesheet' type='text/css'/>
-<script src='/generated/bundle/1e4b515_global.js' type='text/javascript'></script>
+<link href='/min/bundle/d7aa56c_global.css' media='screen' rel='stylesheet' type='text/css'/>
+<script src='/min/bundle/1e4b515_global.js' type='text/javascript'></script>
 ```
 
-All bundles are generated during startup. The filename will change with the content so you should configure your web server with far future expiry headers.
+All bundles are min during startup. The filename will change with the content so you should configure your web server with far future expiry headers.
 
-### generated/
+### min/
 
-All files that needs to be compiled, copied (if you are bundling up a file that doesn't reside in your `public/` directory) or bundled will end up in `public/generated/` directory. This is to have an organized way to separate whats actually *your code* and whats *generated code*.
+All files that needs to be compiled, copied (if you are bundling up a file that doesn't reside in your `public/` directory) or bundled will end up in `public/min/` directory. This is to have an organized way to separate whats actually *your code* and whats *min code*.
 
 ### Filtered paths
 
@@ -141,10 +141,10 @@ which will render this with `bundle:false`:
 and this with `bundle:true`:
 
 ``` html
-<link href='/generated/bundle/d7aa56c_global.css' media='screen' rel='stylesheet' type='text/css'/>
-<link href='/generated/bundle/d7aa56c_ie.css' media='screen' rel='stylesheet' type='text/css'/>
-<script src='/generated/bundle/1e4b515_global.js' type='text/javascript'></script>
-<script src='/generated/bundle/1e4b515_en_US.js' type='text/javascript'></script>
+<link href='/min/bundle/d7aa56c_global.css' media='screen' rel='stylesheet' type='text/css'/>
+<link href='/min/bundle/d7aa56c_ie.css' media='screen' rel='stylesheet' type='text/css'/>
+<script src='/min/bundle/1e4b515_global.js' type='text/javascript'></script>
+<script src='/min/bundle/1e4b515_en_US.js' type='text/javascript'></script>
 ```
 
 License
