@@ -5,7 +5,7 @@ OnTheFlyCompiler = require './otf_compiler'
 compilers = require './default_compilers'
 
 class BundleUp
-  constructor: (app, assetPath, options = {bundle:false}) ->
+  constructor: (app, asset, options = {bundle:false}) ->
     unless options.compilers?
       options.compilers = compilers
     else
@@ -21,7 +21,12 @@ class BundleUp
     @js = new Js(options)
     @css = new Css(options)
 
-    require(assetPath)(new AssetsManager(@css, @js))
+    if typeof asset == "string"
+      require(asset)(new AssetsManager(@css, @js))
+    else if typeof asset == 'function'
+      asset(new AssetsManager(@css, @js))
+    else
+      throw new Error("Unsupported asset type")
 
     if options.bundle
       @js.toBundles()
