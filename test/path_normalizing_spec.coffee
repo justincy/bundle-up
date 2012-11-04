@@ -18,7 +18,7 @@ describe 'Path normalizing', ->
       secondFile = @js.files[0]
       expect(firstFile.file).to.equal(secondFile.file)
       expect(firstFile.origFile).to.equal(secondFile.origFile)
-      expect(firstFile.file).to.equal(__dirname + '/files/public/generated/js/1.js')
+      expect(firstFile.file).to.equal(__dirname + '/files/public/min/js/1.js')
 
     it "shouldn't matter if staticRoot path isn't 'normalized'" , ->
       @js = new Js(staticRoot:"#{__dirname}/files/public", staticUrlRoot:'/')
@@ -33,14 +33,14 @@ describe 'Path normalizing', ->
       @js.addFile(__dirname + '/files/js/1.js')
       secondFile = @js.files[0]
       expect(firstFile.url).to.equal(secondFile.url)
-      expect(firstFile.url).to.equal('/url/generated/js/1.js')
+      expect(firstFile.url).to.equal('/url/min/js/1.js')
 
     it 'should add the correct url using staticUrlRoot http://www.example.com', ->
       @js = new Js(staticRoot:"#{__dirname}/files/public", staticUrlRoot:'http://www.example.com')
       @js.addFile(__dirname + '/files/js/1.js')
-      expect(@js.files[0].url).to.equal('http://www.example.com/generated/js/1.js')
+      expect(@js.files[0].url).to.equal('http://www.example.com/min/js/1.js')
 
     it 'should add the correct url using staticUrlRoot https://www.example.com/', ->
       @js = new Js(staticRoot:"#{__dirname}/files/public", staticUrlRoot:'https://www.example.com/')
       @js.addFile(__dirname + '/files/js/1.js')
-      expect(@js.files[0].url).to.equal('https://www.example.com/generated/js/1.js')
+      expect(@js.files[0].url).to.equal('https://www.example.com/min/js/1.js')

@@ -15,38 +15,38 @@ describe 'When adding files', ->
     expect(@js.files.length).to.equal(1)
     file = @js.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/js/1.js")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/js/1.js")
     expect(file.origFile).to.equal(__dirname + '/files/js/1.js')
-    expect(file.url).to.equal('/generated/js/1.js')
+    expect(file.url).to.equal('/min/js/1.js')
 
   it 'should add the correct paths when adding a coffee file', ->
     @js.addFile(__dirname + '/files/coffee/1.coffee')
     expect(@js.files.length).to.equal(1)
     file = @js.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/coffee/1.js")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/coffee/1.js")
     expect(file.origFile).to.equal(__dirname + '/files/coffee/1.coffee')
-    expect(file.url).to.equal('/generated/coffee/1.js')
+    expect(file.url).to.equal('/min/coffee/1.js')
 
   it 'should add the correct paths when adding a css file', ->
     @css.addFile(__dirname + '/files/css/screen.css')
     expect(@css.files.length).to.equal(1)
     file = @css.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/css/screen.css")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/css/screen.css")
     expect(file.origFile).to.equal(__dirname + '/files/css/screen.css')
-    expect(file.url).to.equal('/generated/css/screen.css')
+    expect(file.url).to.equal('/min/css/screen.css')
 
   it 'should add the correct paths when adding a styl file', ->
     @css.addFile(__dirname + '/files/stylus/main.styl')
     expect(@css.files.length).to.equal(1)
     file = @css.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/stylus/main.css")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/stylus/main.css")
     expect(file.origFile).to.equal(__dirname + '/files/stylus/main.styl')
-    expect(file.url).to.equal('/generated/stylus/main.css')
+    expect(file.url).to.equal('/min/stylus/main.css')
 
-  it 'should not point to generated/ when adding a js file already in staticRoot', ->
+  it 'should not point to min/ when adding a js file already in staticRoot', ->
     @js.addFile(__dirname + '/files/public/jquery.js')
     expect(@js.files.length).to.equal(1)
     file = @js.files[0]
@@ -55,7 +55,7 @@ describe 'When adding files', ->
     expect(file.origFile).to.equal("#{__dirname}/files/public/jquery.js")
     expect(file.url).to.equal('/jquery.js')
 
-  it 'should not point to generated/ when adding a css file already in staticRoot', ->
+  it 'should not point to min/ when adding a css file already in staticRoot', ->
     @css.addFile(__dirname + '/files/public/styles/bootstrap.css')
     expect(@css.files.length).to.equal(1)
     file = @css.files[0]
@@ -69,18 +69,18 @@ describe 'When adding files', ->
     expect(@js.files.length).to.equal(1)
     file = @js.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/main.js")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/main.js")
     expect(file.origFile).to.equal(__dirname + '/files/public/main.coffee')
-    expect(file.url).to.equal('/generated/main.js')
+    expect(file.url).to.equal('/min/main.js')
 
   it 'should add the correct paths when adding a styl file inside staticRoot', ->
     @css.addFile(__dirname + '/files/public/print.styl')
     expect(@css.files.length).to.equal(1)
     file = @css.files[0]
 
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/print.css")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/print.css")
     expect(file.origFile).to.equal(__dirname + '/files/public/print.styl')
-    expect(file.url).to.equal('/generated/print.css')
+    expect(file.url).to.equal('/min/print.css')
 
   it 'should not change the css file when adding a file already in staticRoot', ->
     file = __dirname + '/files/public/styles/bootstrap.css'
@@ -110,9 +110,9 @@ describe 'When adding files', ->
 
     expect(@js.files.length).to.equal(1)
     file = @js.files[0]
-    expect(file.file).to.equal("#{__dirname}/files/public/generated/coffee/1.js")
+    expect(file.file).to.equal("#{__dirname}/files/public/min/coffee/1.js")
     expect(file.origFile).to.equal(__dirname + '/files/coffee/1.coffee')
-    expect(file.url).to.equal('/generated/coffee/1.js')
+    expect(file.url).to.equal('/min/coffee/1.js')
 
   describe 'filtered paths', ->
     it 'should be able to add 1.coffee using files/nested/js/*.coffee', ->

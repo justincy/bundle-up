@@ -18,14 +18,14 @@ describe 'OnTheFlyCompiler', ->
       staticUrlRoot:"/",
       bundle:false
     @app.use(express.static(__dirname + '/files/public/'))
-    
+
     @app.listen(1338)
 
   afterEach ->
     @app.close()
 
   it 'should compile stylus files correctly', (done) ->
-    request.get 'http://localhost:1338/generated/stylus/main.css', (err, res) ->
+    request.get 'http://localhost:1338/min/stylus/main.css', (err, res) ->
       expected = """
       h1 {
         color: #00f;
@@ -39,7 +39,7 @@ describe 'OnTheFlyCompiler', ->
       done()
 
   it 'should compile coffee files correctly', (done) ->
-    request.get 'http://localhost:1338/generated/coffee/1.js', (err, res) ->
+    request.get 'http://localhost:1338/min/coffee/1.js', (err, res) ->
       expected = '''
       (function() {
 
@@ -55,7 +55,7 @@ describe 'OnTheFlyCompiler', ->
     file = bundle.css.files[0]
     expect(file.origFile).to.equal(__dirname + '/files/stylus/main.styl')
     expect(file._imports).to.equal(undefined)
-    request.get 'http://localhost:1338/generated/stylus/main.css', (err, res) ->
+    request.get 'http://localhost:1338/min/stylus/main.css', (err, res) ->
       expect(file._imports).to.not.equal(undefined)
       found = false
       for imp in file._imports
@@ -68,7 +68,7 @@ describe 'OnTheFlyCompiler', ->
   it 'should re-compile main.styl when imported file change', (done) ->
     file = bundle.css.files[0]
     expect(file.origFile).to.equal(__dirname + '/files/stylus/main.styl')
-    request.get 'http://localhost:1338/generated/stylus/main.css', (err, res) ->
+    request.get 'http://localhost:1338/min/stylus/main.css', (err, res) ->
       beforeTime = (fs.statSync __dirname + '/files/stylus/typography.styl').mtime
 
       oldContent = fs.readFileSync __dirname + '/files/stylus/typography.styl', 'utf8'
@@ -76,7 +76,7 @@ describe 'OnTheFlyCompiler', ->
 
       afterTime = (fs.statSync __dirname + '/files/stylus/typography.styl').mtime
 
-      request.get 'http://localhost:1338/generated/stylus/main.css', (err, res) ->
+      request.get 'http://localhost:1338/min/stylus/main.css', (err, res) ->
         # Apparently the main.css file mtime doesn't change
         # most likely because the content in the file is the same...
         # therefore we make the expectations on the typography file
@@ -92,7 +92,7 @@ describe 'OnTheFlyCompiler', ->
 
   it 'should not cause any errors when parallel requests comes in at the same time', (done) ->
     async.forEach [1..4], (i, cb) ->
-      request.get 'http://localhost:1338/generated/stylus/main.css', (err, res) ->
+      request.get 'http://localhost:1338/min/stylus/main.css', (err, res) ->
         expect(res.statusCode).to.equal(200)
         cb(err)
     , (err) ->
@@ -102,21 +102,21 @@ describe 'OnTheFlyCompiler', ->
   describe 'Error handling', ->
     it 'should respond with 500 when requesting a coffee file with syntax errors', (done) ->
       bundle.js.addFile(__dirname + '/files/coffee/syntax_error.coffee')
-      request.get 'http://localhost:1338/generated/coffee/syntax_error.js', (err, res) ->
+      request.get 'http://localhost:1338/min/coffee/syntax_error.js', (err, res) ->
         expect(res.statusCode).to.equal(500)
 
         done()
 
     it 'should respond with 500 when requesting a stylus file with syntax errors', (done) ->
       bundle.css.addFile(__dirname + '/files/stylus/syntax_error.styl')
-      request.get 'http://localhost:1338/generated/stylus/syntax_error.css', (err, res) ->
+      request.get 'http://localhost:1338/min/stylus/syntax_error.css', (err, res) ->
         expect(res.statusCode).to.equal(500)
 
         done()
 
     it 'should respond with 500 when requesting a file not found', (done) ->
       bundle.js.addFile(__dirname + '/files/coffee/not_found.coffee')
-      request.get 'http://localhost:1338/generated/coffee/not_found.js', (err, res) ->
+      request.get 'http://localhost:1338/min/coffee/not_found.js', (err, res) ->
         expect(res.statusCode).to.equal(500)
 
         done()

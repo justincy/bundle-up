@@ -17,27 +17,27 @@ describe 'bundle:true', ->
 
   describe 'individual files', ->
     it 'should create coffee/1.js', (done) ->
-      fs.stat __dirname + "/files/public/generated/coffee/1.js", (err, stats) ->
+      fs.stat __dirname + "/files/public/min/coffee/1.js", (err, stats) ->
         expect(err).to.equal(null)
         done()
 
     it 'should create coffee/2.js', (done) ->
-      fs.stat __dirname + "/files/public/generated/coffee/2.js", (err, stats) ->
+      fs.stat __dirname + "/files/public/min/coffee/2.js", (err, stats) ->
         expect(err).to.equal(null)
         done()
 
     it 'should create js/1.js', (done) ->
-      fs.stat __dirname + "/files/public/generated/js/1.js", (err, stats) ->
+      fs.stat __dirname + "/files/public/min/js/1.js", (err, stats) ->
         expect(err).to.equal(null)
         done()
 
     it 'should create stylus/main.css', (done) ->
-      fs.stat __dirname + "/files/public/generated/stylus/main.css", (err, stats) ->
+      fs.stat __dirname + "/files/public/min/stylus/main.css", (err, stats) ->
         expect(err).to.equal(null)
         done()
 
     it 'should create public/print.css', (done) ->
-      fs.stat __dirname + "/files/public/generated/print.css", (err, stats) ->
+      fs.stat __dirname + "/files/public/min/print.css", (err, stats) ->
         expect(err).to.equal(null)
         done()
 
