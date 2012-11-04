@@ -3,6 +3,16 @@ Bundle up!  [![Build Status](https://secure.travis-ci.org/FGRibreau/bundle-up.pn
 
 Bundle up is a middleware for connect to manage all client-side assets in an organized way.
 
+Fork by @FGRibreau
+------------------
+* Fix BundleUp(app, asset object | path string, options object);
+* Added .addJsUrl() & .addCssUrl()
+* Fix Express 2 & 3
+* Bug fix when adding the same file in different bundles
+* Added .addJsObject()
+
+[Pound](https://github.com/FGRibreau/pound) the higher asset manager for Node.JS is now built over Bundle-up.
+
 Installation
 ------------
 
