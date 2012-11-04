@@ -13,8 +13,9 @@ Usage
 
 ``` js
 var BundleUp = require('bundle-up');
+var assets = require('./assets');
 
-BundleUp(app, __dirname + '/assets', {
+BundleUp(app, assets, {
   staticRoot: __dirname + '/public/',
   staticUrlRoot:'/',
   bundle:true,
@@ -37,8 +38,12 @@ module.exports = function(assets) {
   assets.addJs('/public/js/jquery.placeholder.min.js');
   assets.addJs('/app/client/main.coffee');
 
+  assets.addJsUrl('/socket.io.js');
+
   assets.addCss('/public/bootstrap/bootstrap.min.css');
   assets.addCss('/app/styles/screen.styl');
+
+  assets.addCssUrl('http://twitter.github.com/bootstrap/assets/css/bootstrap.css');
 }
 ```
 

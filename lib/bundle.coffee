@@ -118,8 +118,6 @@ class Bundle
     @_addUrl(url, namespace, true)
 
   _addUrl:(url, namespace=@defaultNamespace, isFromPublicAPI=false) =>
-    url = path.normalize(url)
-
     @files.push
       url: if isFromPublicAPI then true else url
       file: url
