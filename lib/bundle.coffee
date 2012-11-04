@@ -114,13 +114,32 @@ class Bundle
       needsCompiling: needsCompiling
       namespace: namespace
 
+  addUrl:(url, namespace=@defaultNamespace) =>
+    @_addUrl(url, namespace, true)
+
+  _addUrl:(url, namespace=@defaultNamespace, isFromPublicAPI=false) =>
+    url = path.normalize(url)
+
+    @files.push
+      url: if isFromPublicAPI then true else url
+      file: url
+      origFile: url
+      needsCompiling: false
+      namespace: namespace
+
+
   toBundles: =>
-    toBundle = (namespace, files) =>
+
+    compileBundle = (namespace, files) =>
       str = ''
+      urls = []
+
       for file in files
-        if file.namespace == namespace
+        if file.namespace == namespace and file.url != true
           @_compile(file.origFile, file.file)
           str += fs.readFileSync(file.file, 'utf-8').trim('\n') + '\n'
+        else if file.namespace == namespace and file.url is true
+          urls.push(file.file)
 
       str = @minify(str)
       hash = crypto.createHash('md5').update(str).digest('hex')
@@ -128,16 +147,23 @@ class Bundle
 
       writeToFile(filepath, str)
 
-      return filepath
+      # Add the bundle file
+      @addFile(filepath, namespace)
 
+      # Add the urls
+      @_addUrl(url, namespace) for url in urls
+
+    # Find all bundles name
+    bundles = []
+    for file in @files
+      bundles.push file.namespace unless file.namespace in bundles
+
+    # Remove all files
     files = @files
     @files = []
 
-    bundles = []
-    for file in files
-      bundles.push file.namespace unless file.namespace in bundles
-
-    @addFile(toBundle(bundle, files), bundle) for bundle in bundles
+    # Only add the bundle files
+    compileBundle(bundle, files) for bundle in bundles
 
   _compile: (file, writeTo) =>
     compiler.compileFile(@options.compilers, file, (err, content) ->
