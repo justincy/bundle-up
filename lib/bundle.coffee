@@ -8,7 +8,7 @@ class Bundle
   constructor: (@options) ->
     @options.staticRoot = path.normalize(@options.staticRoot)
     @files = []
-    @defaultCompiledDir = 'c'
+    @defaultCompiledDir = 'min'
     @defaultNamespace = 'global'
 
   # Gets relative path from staticRoot. If the
