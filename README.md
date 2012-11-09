@@ -5,25 +5,25 @@ Bundle up is a middleware for connect to manage all client-side assets in an org
 
 Fork by @FGRibreau
 ------------------
-* Fix BundleUp(app, asset object | path string, options object);
-* Added .addJsUrl() & .addCssUrl()
+* Fix `BundleUp(app, asset object | path string, options object);`
+* Added `.addJsUrl(url [, namespace])` & `.addCssUrl(url [, namespace])`
 * Fix Express 2 & 3
 * Bug fix when adding the same file in different bundles
-* Added .addJsObject()
+* Added `.addJsObject(object [, namespace])`
 * `complete` callback when Bundle up is ready (if in production, when files are minified)
 
-[Pound](https://github.com/FGRibreau/pound) an higher-level asset manager  for Node.JS/Express now use this fork of Bundle-up.
+[Pound](https://github.com/FGRibreau/pound) an higher-level asset manager for Node.JS/Express now use this fork of Bundle-up.
 
 Installation
 ------------
 
-    $ npm install bundle-up
+    $ npm install bundle-up2
 
 Usage
 -----
 
 ``` js
-var BundleUp = require('bundle-up')
+var BundleUp = require('bundle-up2')
 ,   assets = require('./assets');
 
 BundleUp(app, assets, {
