@@ -1,5 +1,7 @@
-Bundle = require './bundle'
+Bundle   = require './bundle'
 UglifyJS = require 'uglify-js'
+_        = require 'lodash'
+
 class Js extends Bundle
   constructor: (@options) ->
     @fileExtension = '.js'
