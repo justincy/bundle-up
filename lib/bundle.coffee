@@ -1,8 +1,9 @@
-crypto = require 'crypto'
-path = require 'path'
-compiler = require './compiler'
-fs = require 'fs'
-{writeToFile, normalizeUrl} = require './helpers'
+crypto                      = require 'crypto'
+path                        = require 'path'
+compiler                    = require './compiler'
+fs                          = require 'fs'
+async                       = require 'async'
+{writeToFile, normalizeUrl, fileExistSync} = require './helpers'
 
 class Bundle
   constructor: (@options) ->
@@ -136,38 +137,59 @@ class Bundle
       namespace: namespace
 
 
-  toBundles: =>
+  toBundles: (fnToBundleDone) =>
+    fnToBundleDone = fnToBundleDone || ->
 
-    compileBundle = (namespace, files) =>
+    compileBundle = (files, namespace, fnCompileDone) =>
       str = ''
       specialFiles = []
 
-      for file in files
-        if file.namespace == namespace
-          if typeof file.url is "object" or typeof file.url is "boolean"
-            specialFiles.push(file.file)
+      files = files.filter((file) -> file.namespace == namespace)
 
-          else if typeof file.url is "string"
-            @_compile(file.origFile, file.file)
-            str += fs.readFileSync(file.file, 'utf-8').trim('\n') + '\n'
+      fileIterator = (file, cb) =>
+        if typeof file.url == "object" or typeof file.url == "boolean"
+          specialFiles.push(file.file)
+          return cb(null, undefined)
 
-      str = @minify(str)
-      hash = crypto.createHash('md5').update(str).digest('hex')
-      filepath = "#{@options.staticRoot}/#{@defaultCompiledDir}/bundle/#{hash.substring(0, 7)}_#{namespace}#{@fileExtension}"
+        else if typeof file.url is "string"
+          @_compile(file.origFile, file.file, (err, content) ->
+            cb(err, content.trim('\n'))
+          )
 
-      writeToFile(filepath, str)
+      complete = (err, results) =>
+        throw new Error("compileBundle " + err) if(err)
 
-      # Add the bundle file
-      @addFile(filepath, namespace)
+        results = results.filter((o) -> typeof(o) != "undefined")
+        str     = results.join(';\n')
 
-      # Add the special files (urls & objects)
-      for specialFile in specialFiles
-        if typeof specialFile is "object"
-          # Add the object
-          @addObject(specialFile, namespace)
-        else
-          # Add the objecturl
-          @_addUrl(specialFile, namespace)
+        hash     = crypto.createHash('md5').update(str).digest('hex')
+        filepath = "#{@options.staticRoot}/#{@defaultCompiledDir}/bundle/#{hash.substring(0, 7)}_#{namespace}#{@fileExtension}"
+
+        # Then add the special files (urls & objects)
+
+        for specialFile in specialFiles
+          if typeof specialFile is "object"
+            # Add the object
+            @addObject(specialFile, namespace)
+          else
+            # Add the objecturl
+            @_addUrl(specialFile, namespace)
+
+        # If the bundle contains something
+        if results.length > 0
+          if(fileExistSync(filepath))
+            # this bundle was already compiled, skip it
+          else
+            str  = @minify(str)
+
+            writeToFile(filepath, str)
+
+          # Add the bundle file
+          @addFile(filepath, namespace)
+
+        fnCompileDone()
+
+      async.map(files, fileIterator, complete)
 
 
     # Find all bundles name
@@ -179,14 +201,18 @@ class Bundle
     files = @files
     @files = []
 
-    # Only add the bundle files
-    compileBundle(bundle, files) for bundle in bundles
+    # bundleIterator = (bundle, cb) ->
+    #   compileBundle(bundle, files, cb)
 
-  _compile: (file, writeTo) =>
+    # Only add the bundle files
+    async.forEach(bundles, compileBundle.bind(@, files), fnToBundleDone)
+
+  _compile: (file, writeTo, cb) =>
+
     compiler.compileFile(@options.compilers, file, (err, content) ->
       throw err if err?
       writeToFile(writeTo, content)
+      cb(null, content)
     )
-    return writeTo
 
 module.exports = Bundle

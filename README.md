@@ -10,6 +10,7 @@ Fork by @FGRibreau
 * Fix Express 2 & 3
 * Bug fix when adding the same file in different bundles
 * Added .addJsObject()
+* `complete` callback when Bundle up is ready (if in production, when files are minified)
 
 [Pound](https://github.com/FGRibreau/pound) the higher asset manager for Node.JS is now built over Bundle-up.
 
@@ -30,7 +31,8 @@ BundleUp(app, assets, {
   staticUrlRoot:'/',
   bundle:true,
   minifyCss: true,
-  minifyJs: true
+  minifyJs: true,
+  complete: console.log.bind(console, "Bundle-up: static files are minified/ready")
 });
 
 // To actually serve the files a static file

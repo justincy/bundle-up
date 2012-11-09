@@ -1,8 +1,9 @@
-AssetsManager = require './assets_manager'
-Js = require './js'
-Css = require './css'
+AssetsManager    = require './assets_manager'
+_                = require 'lodash'
+Js               = require './js'
+Css              = require './css'
 OnTheFlyCompiler = require './otf_compiler'
-compilers = require './default_compilers'
+compilers        = require './default_compilers'
 
 class BundleUp
   constructor: (app, asset, options = {bundle:false}) ->
@@ -16,6 +17,7 @@ class BundleUp
 
     options.minifyCss = options.minifyCss || false
     options.minifyJs = options.minifyJs || false
+    options.complete = options.complete || ->
 
     @app = app
     @js = new Js(options)
@@ -29,11 +31,13 @@ class BundleUp
       throw new Error("Unsupported asset type")
 
     if options.bundle
-      @js.toBundles()
-      @css.toBundles()
+      done = _.after(2, options.complete)
+      @js.toBundles(done)
+      @css.toBundles(done)
     else
       # Compile files on-the-fly when not bundled
       @app.use (new OnTheFlyCompiler(@js, @css, options.compilers)).middleware
+      options.complete()
 
 
     if(@app.locals)

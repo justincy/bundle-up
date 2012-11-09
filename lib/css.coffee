@@ -8,7 +8,10 @@ class Css extends Bundle
   minify: (code) ->
     return code unless @options.minifyCss
 
-    csso.justDoIt(code)
+    try
+      csso.justDoIt(code, false, true)
+    catch err
+      console.error("CSSO", err)
 
   render: (namespace) ->
     style = ''

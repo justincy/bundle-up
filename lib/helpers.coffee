@@ -9,7 +9,7 @@ fs = require 'fs'
 #
 #
 #    writeToFile('/tmp/hi/folder/file.js', "console.log('hi')")
-#   
+#
 # will create a file at /tmp/hi/folder/file.js with provided content
 #
 writeToFile = (file, content) ->
@@ -35,3 +35,12 @@ normalizeUrl = (url) ->
 
 exports.writeToFile = writeToFile
 exports.normalizeUrl = normalizeUrl
+
+exports.fileExistSync = (filePath) ->
+  try
+    fs.statSync(filePath);
+  catch err
+    return false if err.code == 'ENOENT'
+
+
+  return true
