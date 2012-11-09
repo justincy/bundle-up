@@ -12,7 +12,7 @@ Fork by @FGRibreau
 * Added .addJsObject()
 * `complete` callback when Bundle up is ready (if in production, when files are minified)
 
-[Pound](https://github.com/FGRibreau/pound) the higher asset manager for Node.JS is now built over Bundle-up.
+[Pound](https://github.com/FGRibreau/pound) an higher-level asset manager  for Node.JS/Express now use this fork of Bundle-up.
 
 Installation
 ------------
@@ -45,21 +45,25 @@ The first parameter to the BundleUp middleware is the app object and the second 
 ``` js
 // assets.js
 module.exports = function(assets) {
-  // Support namespace/bundle
+  // .addJs(filename [, namespace])
   assets.addJs('/public/js/jquery-1.6.4.min.js', 'default');
   assets.addJs('/public/js/jquery-1.6.4.min.js', 'app');
 
   assets.addJs('/public/js/jquery.placeholder.min.js');
   assets.addJs('/app/client/main.coffee');
 
-  // New
+  // New .addJsUrl(object [, namespace])
   assets.addJsUrl('/socket.io.js');
 
+  // addCss(filename [, namespace])
   assets.addCss('/public/bootstrap/bootstrap.min.css');
   assets.addCss('/app/styles/screen.styl');
 
-  // New
+  // New .addCssUrl(object [, namespace])
   assets.addCssUrl('http://twitter.github.com/bootstrap/assets/css/bootstrap.css');
+
+  // New .addJsObject(object [, namespace])
+  assets.addJsObject({"Redsmin.app":{}});// Will create Redsmin.app = {};
 }
 ```
 
