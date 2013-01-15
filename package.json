@@ -2,7 +2,7 @@
   "name": "bundle-up2",
   "author": "Francois-Guillaume Ribreau <npm@fgribreau.com> (http://fgribreau.com)",
   "description": "A simple asset manager middleware for connect",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "repository": {
     "url": ""
   },
@@ -20,7 +20,7 @@
     "coffee-script": "~1.4.0",
     "async": "~0.1.15",
     "stylus": "~0.19.0",
-    "mkdirp": "~0.0.7",
+    "mkdirp": "~0.3.4",
     "uglify-js": "~1.2.5",
     "lodash": "~0.9.2",
     "clean-css": "~0.8.2"
