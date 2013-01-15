@@ -160,7 +160,7 @@ class Bundle
         throw new Error("compileBundle " + err) if(err)
 
         results = results.filter((o) -> typeof(o) != "undefined")
-        str     = results.join(';\n')
+        str     = results.join(if @fileExtension is '.css' then '\n' else ';\n')
 
         hash     = crypto.createHash('md5').update(str).digest('hex')
         filepath = "#{@options.staticRoot}/#{@defaultCompiledDir}/bundle/#{hash.substring(0, 7)}_#{namespace}#{@fileExtension}"
