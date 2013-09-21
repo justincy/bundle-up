@@ -167,6 +167,9 @@ and this with `bundle:true`:
 <script src='/min/bundle/1e4b515_en_US.js' type='text/javascript'></script>
 ```
 
+## Donate
+[Donate Bitcoins](https://coinbase.com/checkouts/fc3041b9d8116e0b98e7d243c4727a30)
+
 License
 -------
 
