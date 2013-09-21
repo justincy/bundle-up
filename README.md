@@ -1,4 +1,4 @@
-Bundle up!  [![Build Status](https://secure.travis-ci.org/FGRibreau/bundle-up.png)](https://secure.travis-ci.org/FGRibreau/bundle-up)
+Bundle up!  [![Build Status](https://secure.travis-ci.org/FGRibreau/bundle-up.png)](https://secure.travis-ci.org/FGRibreau/bundle-up) [![Gittip](http://badgr.co/gittip/fgribreau.png)](https://www.gittip.com/fgribreau/)
 ==========
 
 Bundle up is a middleware for connect to manage all client-side assets in an organized way.
