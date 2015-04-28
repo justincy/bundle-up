@@ -1,2 +1,1 @@
-require('coffee-script');
-module.exports = require(__dirname + '/lib/bundle_up');
+module.exports = require('./lib/bundle_up.js');
