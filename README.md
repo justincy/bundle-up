@@ -1,18 +1,9 @@
-Bundle up!  [![Build Status](https://secure.travis-ci.org/FGRibreau/bundle-up.png)](https://secure.travis-ci.org/FGRibreau/bundle-up) [![Gittip](http://badgr.co/gittip/fgribreau.png)](https://www.gittip.com/fgribreau/)
+Bundle up!
 ==========
 
 Bundle up is a middleware for connect to manage all client-side assets in an organized way.
 
-Fork by @FGRibreau
-------------------
-* Fix `BundleUp(app, asset object | path string, options object);`
-* Added `.addJsUrl(url [, namespace])` & `.addCssUrl(url [, namespace])`
-* Fix Express 2 & 3
-* Bug fix when adding the same file in different bundles
-* Added `.addJsObject(object [, namespace])`
-* `complete` callback when Bundle up is ready (if in production, when files are minified)
-
-[Pound](https://github.com/FGRibreau/pound) an higher-level asset manager for Node.JS/Express now use this fork of Bundle-up.
+This is a fork of a fork by [@FGRibreau](https://github.com/FGRibreau/bundle-up).
 
 Installation
 ------------
@@ -166,9 +157,6 @@ and this with `bundle:true`:
 <script src='/min/bundle/1e4b515_global.js' type='text/javascript'></script>
 <script src='/min/bundle/1e4b515_en_US.js' type='text/javascript'></script>
 ```
-
-## Donate
-[Donate Bitcoins](https://coinbase.com/checkouts/fc3041b9d8116e0b98e7d243c4727a30)
 
 License
 -------
